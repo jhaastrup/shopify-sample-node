@@ -1,0 +1,61 @@
+{
+  "name": "shopify-express-boilerplate",
+  "version": "0.0.3",
+  "description": "Shopify Boilerplate Code written in React, Node, Express, MongoDB and GraphQL",
+  "author": {
+    "name": "Harshdeep Singh Hura",
+    "url": "https://harshdeephura.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kinngh/shopify-node-express-mongodb-app.git"
+  },
+  "scripts": {
+    "update": "ncu -u",
+    "update:check": "ncu",
+    "dev": "NODE_ENV=dev nodemon server/index.js --ignore ./src",
+    "preserve": "npm run build",
+    "build": "vite build --outDir dist/client",
+    "start": "NODE_ENV=prod node server/index.js",
+    "pretty": "prettier --write .",
+    "ngrok:auth": "1WKyqXlKKDciE6ZbebzKo9jLp2a_4T7KsAVzoGjzsSi4d92ka",
+    "ngrok": "ngrok http 8081",
+    "update:url": "node devUtils/updateDashboard.mjs",
+    "shopify": "shopify",
+    "s:e:create": "shopify app scaffold extension",
+    "s:e:deploy": "shopify app deploy"
+  },
+  "dependencies": {
+    "@apollo/client": "^3.6.9",
+    "@shopify/app-bridge": "^3.2.2",
+    "@shopify/app-bridge-react": "^3.2.2",
+    "@shopify/app-bridge-utils": "^3.2.2",
+    "@shopify/polaris": "^10.2.0",
+    "@shopify/shopify-api": "^5.0.1",
+    "axios": "^0.27.2",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cryptr": "^6.0.3",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "formik": "^2.2.9",
+    "graphql": "^16.6.0",
+    "mongoose": "^6.6.0",
+    "raviger": "^4.1.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "serve-static": "^1.15.0",
+    "uuidv4": "^6.2.13"
+  },
+  "devDependencies": {
+    "@shopify/app": "^3.10.1",
+    "@shopify/cli": "^3.10.1",
+    "@shopify/cli-kit": "^3.10.1",
+    "@vitejs/plugin-react": "^2.1.0",
+    "ngrok": "^4.3.3",
+    "nodemon": "^2.0.19",
+    "npm-check-updates": "^16.1.0",
+    "prettier": "^2.7.1",
+    "vite": "^3.1.0"
+  }
+}
