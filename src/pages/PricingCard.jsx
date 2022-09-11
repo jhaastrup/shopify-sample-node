@@ -14,7 +14,7 @@ import {
   Stack,
   Grid,
   Banner,
-  Checkbox,
+  Checkbox
 } from "@shopify/polaris";
 import { Formik, Field, FieldArray } from "formik";
 
@@ -24,60 +24,60 @@ export function PricingCard() {
   const [decreasePercentage, setDecreasePercentage] = useState(0);
   const [activate, setActivate] = useState(true);
   const [adjustFee, setAdjustFee] = useState("");
-  const [dbAdjustFee, setDbAdjustFee] = useState("");
-  const [amount, setAmount] = useState(0);
+  const [dbAdjustFee, setDbAdjustFee] = useState("")
+  const[amount, setAmount] = useState(0);
   const [showBanner, setShowBanner] = useState(false);
   const [freeShipping, setFreeShipping] = useState(false);
-  const [spendLimit, setSpendLimit] = useState(0);
+  const [spendLimit, setSpendLimit] = useState(0)
 
   const feeOptions = [
-    { label: "Flat", value: "flat" },
-    { label: "Increase", value: "increase" },
-    { label: "Decrease", value: "decrease" },
-    { label: "Realtime", value: "realtime" },
+    {label: 'Flat', value: 'flat'},
+    {label: 'Increase', value: 'increase'},
+    {label: 'Decrease', value: 'decrease'},
+    {label:'Realtime', value:'realtime'}
   ];
 
   useEffect(() => {
     const loadData = async () => {
-      const data = await axios.get("/dbobj");
-      console.log(data, "from use effect");
-      setDbAdjustFee(data.data.dbObj?.adjustFee);
-      setAmount(data.data.dbObj?.amount);
-      setIncreasePercentage(data.data.dbObj?.increasePercentage);
-      setDecreasePercentage(data.data.dbObj?.decreasePercentage);
-      setSpendLimit(data.data.dbObj?.spendLimit);
-      if (data.data.dbObj?.activate === true) {
-        setActivate(true);
-      }
-      if (data.data.dbObj?.activate === false) {
-        setActivate(false);
-      }
-      if (data.data.dbObj?.activateFreeShipping === true) {
-        setFreeShipping(true);
-      }
+     const data = await axios.get("/dbobj")
+     console.log(data,"from use effect");
+     setDbAdjustFee(data.data.dbObj?.adjustFee)
+     setAmount(data.data.dbObj?.amount)
+     setIncreasePercentage(data.data.dbObj?.increasePercentage)
+     setDecreasePercentage(data.data.dbObj?.decreasePercentage);
+     setSpendLimit(data.data.dbObj?.spendLimit);
+     if(data.data.dbObj?.activate === true){
+      setActivate(true);
+     }
+     if(data.data.dbObj?.activate === false){
+      setActivate(false);
+     }
+     if(data.data.dbObj?.activateFreeShipping === true){
+      setFreeShipping(true);
+     }
     };
     loadData();
-  }, []);
+  }, []); 
 
   const initialValues = {
-    adjustFee: dbAdjustFee,
-    amount: amount,
-    activate: activate,
-    decreasePercentage: decreasePercentage,
-    increasePercentage: increasePercentage,
-    freeShipping: freeShipping,
-    spendLimit: spendLimit,
-  };
+       adjustFee:dbAdjustFee,
+       amount:amount,
+       activate:activate,
+       decreasePercentage:decreasePercentage,
+       increasePercentage:increasePercentage,
+       freeShipping:freeShipping,
+       spendLimit:spendLimit
+  }
 
   return (
     <Formik
       initialValues={initialValues}
       enableReinitialize={true}
-      onSubmit={async (values, formikBag) => {
+      onSubmit={ async (values, formikBag) => {
         console.log(values);
         const data = await axios.post("/shipping_fee", { values });
-        if (data.status === 200) {
-          setShowBanner(true);
+        if(data.status === 200){
+          setShowBanner(true)
         }
       }}
     >
@@ -95,13 +95,11 @@ export function PricingCard() {
         console.log({ errors, values });
         return (
           <Form onSubmit={handleSubmit}>
-            {showBanner && (
-              <Banner
-                title="Shipping Fee Settings Saved Successfully"
-                status="success"
-                onDismiss={() => setShowBanner(false)}
-              />
-            )}
+            {showBanner && <Banner
+              title="Shipping Fee Settings Saved Successfully"
+              status="success"
+              onDismiss={() => setShowBanner(false)}
+            />}
             <TextContainer spacing="loose">
               <Heading>Checkout Settings</Heading>
             </TextContainer>
@@ -128,134 +126,126 @@ export function PricingCard() {
 
               {values.activate === true && (
                 <>
-                  <TextContainer spacing="loose">
-                    <Heading>Shipping Fee Settings</Heading>
-                    <p>
-                      Determine if you want to increase or decrease shipping
-                      quotes.
-                      <br />
-                      You can increase or decrease quotes by flat rate or by
-                      percentage or use realtime quotes from sendbox
-                    </p>
-                  </TextContainer>
+                <TextContainer spacing="loose">
+              <Heading>Shipping Fee Settings</Heading>
+              <p>Determine if you want to increase or decrease shipping quotes.<br/>
+                 You can increase or decrease quotes by flat rate or by percentage or use realtime quotes from sendbox</p>
+    
+            </TextContainer>
 
-                  <br />
+            <br/>
 
-                  <Grid>
-                    <Grid.Cell
-                      columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}
-                    >
-                      <Select
-                        label="Adjust Shipping Fee"
-                        options={feeOptions}
-                        name="adjustFee"
-                        placeholder="Select Shipping Fee Adjustment"
-                        onChange={(value) =>
-                          handleChange(
-                            {
-                              target: { id: "adjustFee", value },
-                            },
-                            setAdjustFee(value)
-                          )
-                        }
-                        value={values.adjustFee}
-                      />
-                    </Grid.Cell>
-
-                    {values?.adjustFee === "flat" && (
-                      <Grid.Cell
-                        columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}
-                      >
-                        <TextField
-                          value={values.amount}
-                          //onChange={handleAppIdChange}
-                          label="Amount"
-                          name="amount"
-                          type="number"
-                          placeholder="Enter amount"
-                          onChange={(value) =>
-                            handleChange({
-                              target: { id: "amount", value },
-                            })
-                          }
-                        />
-                      </Grid.Cell>
-                    )}
-
-                    {values.adjustFee === "increase" && (
-                      <Grid.Cell
-                        columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}
-                      >
-                        <TextField
-                          value={values.percentage}
-                          //onChange={handleAppIdChange}
-                          label="Percentage"
-                          name="percantage"
-                          type="number"
-                          placeholder="Enter Percentage"
-                          onChange={(value) =>
-                            handleChange({
-                              target: { id: "percentage", value },
-                            })
-                          }
-                        />
-                      </Grid.Cell>
-                    )}
-
-                    {values.adjustFee === "decrease" && (
-                      <Grid.Cell
-                        columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}
-                      >
-                        <TextField
-                          value={values.percentage}
-                          //onChange={handleAppIdChange}
-                          label="Percentage"
-                          name="percantage"
-                          type="number"
-                          placeholder="Enter Percentage"
-                          onChange={(value) =>
-                            handleChange({
-                              target: { id: "percentage", value },
-                            })
-                          }
-                        />
-                      </Grid.Cell>
-                    )}
-                  </Grid>
-                </>
-              )}
-
-              {values.activate === true && (
-                <>
-                  <Checkbox
-                    label="Allow free shipping"
-                    checked={values.freeShipping}
-                    onChange={(value) =>
-                      handleChange({ target: { id: "freeShipping", value } })
-                    }
-                    name="freeShipping"
-                  />
-
-                  {values.freeShipping === true && (
-                    <TextField
-                      value={values.spendLimit}
-                      label="Customer spend limit"
-                      helpText="This is the amount customer must spend on your site to activate shipping"
-                      type="number"
-                      name="spendLimit"
-                      onChange={(value) =>
-                        handleChange({
-                          target: { id: "spendLimit", value },
-                        })
+              <Grid>
+                  <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                    <Select 
+                     label="Adjust Shipping Fee"
+                     options={feeOptions}
+                     name="adjustFee"
+                     placeholder="Select Shipping Fee Adjustment"
+                     onChange={(value) =>
+                        handleChange(
+                          {
+                            target: { id: "adjustFee", value },
+                          },
+                          setAdjustFee(value)
+                        )
                       }
+                      value={values.adjustFee}
+
                     />
+
+                  </Grid.Cell>  
+
+                  {values?.adjustFee === "flat" && (
+                       <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                       <TextField
+                           value={values.amount}
+                           //onChange={handleAppIdChange}
+                           label="Amount"
+                           name="amount"
+                           type="number"
+                           placeholder="Enter amount"
+                           onChange={(value) =>
+                             handleChange({
+                               target: { id: "amount", value },
+                             })
+                           }
+                         />
+                       </Grid.Cell>
                   )}
+
+                  {values.adjustFee === "increase" && (
+                      <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                      <TextField
+                          value={values.percentage}
+                          //onChange={handleAppIdChange}
+                          label="Percentage"
+                          name="percantage"
+                          type="number"
+                          placeholder="Enter Percentage"
+                          onChange={(value) =>
+                            handleChange({
+                              target: { id: "percentage", value },
+                            })
+                          }
+                        />
+                      </Grid.Cell>
+                  )}
+
+                  {values.adjustFee === "decrease" && (
+                      <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
+                      <TextField
+                          value={values.percentage}
+                          //onChange={handleAppIdChange}
+                          label="Percentage"
+                          name="percantage"
+                          type="number"
+                          placeholder="Enter Percentage"
+                          onChange={(value) =>
+                            handleChange({
+                              target: { id: "percentage", value },
+                            })
+                          }
+                        />
+                      </Grid.Cell>
+                  )}
+
+            
+              </Grid>
+
                 </>
               )}
 
-              <Button primary submit>
-                Submit
-              </Button>
+            {values.activate === true && (
+                <>
+                   <Checkbox
+                label ="Allow free shipping"
+                checked = {values.freeShipping}
+                onChange={(value) =>handleChange({target:{id:"freeShipping", value}})}
+                name="freeShipping"
+              />
+
+              {values.freeShipping === true && (
+                <TextField 
+                   value={values.spendLimit}
+                   label="Customer spend limit"
+                   helpText="This is the amount customer must spend on your site to activate shipping"
+                   type="number"
+                   name="spendLimit"
+                   onChange={(value) =>
+                    handleChange({
+                      target: { id: "spendLimit", value },
+                    })
+                  }
+
+                />
+              
+              )}
+              </>
+            )}
+
+            
+              <Button primary submit>Submit</Button>
             </FormLayout>
           </Form>
         );

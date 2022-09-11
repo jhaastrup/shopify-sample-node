@@ -12,7 +12,7 @@ const HomePage = () => {
   return (
     <React.Fragment>
       <Page title="Sendbox Settings">
-        <SettingsForm />
+      <SettingsForm/>
         {/* <Layout>
           <Layout.Section>
             <Card>

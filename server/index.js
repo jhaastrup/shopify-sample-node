@@ -14,7 +14,7 @@ const isActiveShop = require("./middleware/isActiveShop.js");
 const applyAuthMiddleware = require("./middleware/auth.js");
 const hmacVerify = require("./middleware/hmacVerify.js");
 const userRoutes = require("./routes/index.js");
-const { appUninstallHandler } = require("./webhooks/");
+const { appUninstallHandler, productsCreateHandler, productsUpdateHandler } = require("./webhooks/");
 const {
   customerDataRequest,
   customerRedact,
@@ -62,6 +62,16 @@ Shopify.Webhooks.Registry.addHandlers({
     webhookHandler: appUninstallHandler,
   },
   //MARK:- Add webhooks here to register
+  PRODUCTS_CREATE: {
+    path: "/webhooks/products_create",
+    webhookHandler: productsCreateHandler,
+  },
+
+  PRODUCTS_UPDATE: {
+    path: "/webhooks/products_update",
+    webhookHandler: productsUpdateHandler,
+  },
+
 });
 
 const createServer = async (root = process.cwd()) => {

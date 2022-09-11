@@ -20,7 +20,7 @@ import { useRoutes } from "raviger";
 
 const appBridgeConfig = {
   apiKey: process.env.SHOPIFY_API_KEY,
-  host: new URL(location).searchParams.get("host"),
+  host: new URL(location.href).searchParams.get("host"),
   forceRedirect: true,
 };
 

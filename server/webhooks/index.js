@@ -6,5 +6,5 @@ const productsUpdateHandler = require("./products_update.js");
 module.exports = {
   appUninstallHandler,
   productsCreateHandler,
-  productsUpdateHandler,
+  productsUpdateHandler
 };

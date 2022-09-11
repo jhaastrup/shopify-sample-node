@@ -8,10 +8,7 @@ require("dotenv").config();
 const applyAuthMiddleware = (app) => {
   app.get("/auth", async (req, res) => {
     if (!req.signedCookies[app.get("top-level-oauth-cookie")]) {
-      return res.redirect(
-        `/auth/toplevel?${new URLSearchParams(req.query).toString()}`
-      );
-      //return res.redirect(`/auth/toplevel?shop=${req.query.shop}`);
+     return res.redirect(`/auth/toplevel?shop=${req.query.shop}`);
     }
 
     const redirectUrl = await Shopify.Auth.beginAuth(
@@ -114,6 +111,7 @@ const applyAuthMiddleware = (app) => {
           break;
       }
     }
+    
   });
 };
 
