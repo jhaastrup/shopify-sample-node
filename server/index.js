@@ -61,6 +61,7 @@ Shopify.Webhooks.Registry.addHandlers({
     path: "/webhooks/app_uninstalled",
     webhookHandler: appUninstallHandler,
   },
+  //MARK:- Add webhooks here to register
 });
 
 const createServer = async (root = process.cwd()) => {
