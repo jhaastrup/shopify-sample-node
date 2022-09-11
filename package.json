@@ -6,6 +6,9 @@
     "name": "Harshdeep Singh Hura",
     "url": "https://harshdeephura.com"
   },
+  "engines": {
+    "node": "16.15.1"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/kinngh/shopify-node-express-mongodb-app.git"
