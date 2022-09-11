@@ -1,54 +1,9 @@
 const { Shopify } = require("@shopify/shopify-api");
 const { gdprTopics } = require("@shopify/shopify-api/dist/webhooks/registry");
-
 const SessionModel = require("../../utils/models/SessionModel");
 const StoreModel = require("../../utils/models/StoreModel");
 const topLevelAuthRedirect = require("../../utils/topLevelAuthRedirect");
-const { uuid } = require('uuidv4');
 require("dotenv").config();
-
-const HOST = process.env.SHOPIFY_APP_URL
-
- const registerFulfillment =  `mutation {
-  fulfillmentServiceCreate(
-    name: "Fulfillment by Sendbox",
-    trackingSupport: true, 
-    callbackUrl:"https://shopify.integrations.sendbox.co",
-    fulfillmentOrdersOptIn:true 
-    inventoryManagement:true
-    ) {
-    userErrors {
-      message
-    }
-    fulfillmentService {
-      id
-      location {
-          id
-        }
-    }
-  }
-}`;
-
-const registerWebhook = `
-mutation webhookSubscriptionCreate($topic: WebhookSubscriptionTopic!, $webhookSubscription: WebhookSubscriptionInput!) {
-  webhookSubscriptionCreate(topic: $topic, webhookSubscription: $webhookSubscription) {
-    webhookSubscription {
-      id
-      topic
-      format
-      endpoint {
-        __typename
-        ... on WebhookHttpEndpoint {
-          callbackUrl
-        }
-      }
-    }
-  }
-}
-`
-
-
-
 
 const applyAuthMiddleware = (app) => {
   app.get("/auth", async (req, res) => {
@@ -77,51 +32,6 @@ const applyAuthMiddleware = (app) => {
     );
 
     const { shop, accessToken } = session;
-    console.log({accessToken});
-    const store_id = uuid();
-    console.log({store_id});
-    await StoreModel.findOneAndUpdate({shop}, {storeId:store_id, accessToken}); 
-
-    //register graph client 
-    const client = new Shopify.Clients.Graphql(
-      session.shop,
-      session.accessToken 
-    )
-
-    const fulfillment = await client.query({data: registerFulfillment}); 
-    console.log(JSON.stringify(fulfillment));
-
-     //register create product webhook
-     const createProductWebhook = await client.query({
-      data:{
-        query: registerWebhook,
-          variables:{
-          "topic": "PRODUCTS_CREATE",
-          "webhookSubscription": {
-            "callbackUrl": `${HOST}/create_product?store_id=${store_id}`,
-            "format": "JSON"
-          }
-        },
-      }
-   });
-    console.log({createProductWebhook}); 
-
-      //register update product webhook
-      const updateProductWebhook = await client.query({
-        data:{
-          query:registerWebhook,
-          variables:{
-            topic:"PRODUCTS_UPDATE",
-            webhookSubscription:{
-              callbackUrl:`${HOST}/update_product?store_id=${store_id}`,
-              format:"JSON"
-            }
-          }
-        }
-      })
-
-      console.log({updateProductWebhook})
-
 
     const webhookRegistrar = await Shopify.Webhooks.Registry.registerAll({
       shop,

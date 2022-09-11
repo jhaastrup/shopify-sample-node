@@ -58,8 +58,8 @@ export function StoreCard({ onSubmitted }) {
     lineAddress2: lineAddress2,
     country: dbCountry,
     state: dbState,
-    postal_code:postalCode,
-    city:city
+    postal_code: postalCode,
+    city: city,
   };
 
   const countries = CountryObj.countries.map((con) => con.name);
@@ -78,12 +78,12 @@ export function StoreCard({ onSubmitted }) {
     <Formik
       initialValues={initialValues}
       enableReinitialize={true}
-      onSubmit={ async (values, formikBag) => {
+      onSubmit={async (values, formikBag) => {
         console.log(values);
         const data = await axios.post("/store_details", { values });
-        if(data.status === 200){
+        if (data.status === 200) {
           setShowBanner(true);
-        } 
+        }
       }}
     >
       {({
@@ -101,15 +101,18 @@ export function StoreCard({ onSubmitted }) {
          console.log(dd); */
         return (
           <Form onSubmit={handleSubmit}>
-           {showBanner && <Banner
-              title="Store Settings Saved Successfully"
-              status="success"
-              onDismiss={() => setShowBanner(false)}
-            />}
+            {showBanner && (
+              <Banner
+                title="Store Settings Saved Successfully"
+                status="success"
+                onDismiss={() => setShowBanner(false)}
+              />
+            )}
             <TextContainer spacing="loose">
               <Heading>Store Settings</Heading>
               <p>
-                Your store information, this will serve as origin details to calculate quotes.
+                Your store information, this will serve as origin details to
+                calculate quotes.
               </p>
             </TextContainer>
 
@@ -173,7 +176,6 @@ export function StoreCard({ onSubmitted }) {
                       )
                     }
                     value={values.state}
-                    
                     placeholder="Select your state"
                   />
                 </Grid.Cell>
@@ -215,7 +217,7 @@ export function StoreCard({ onSubmitted }) {
 
               <Grid>
                 <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                <TextField
+                  <TextField
                     value={values.city}
                     label="City"
                     name="city"
@@ -227,10 +229,10 @@ export function StoreCard({ onSubmitted }) {
                       })
                     }
                   />
-                </Grid.Cell> 
+                </Grid.Cell>
 
                 <Grid.Cell columnSpan={{ xs: 6, sm: 3, md: 3, lg: 6, xl: 6 }}>
-                <TextField
+                  <TextField
                     value={values.postal_code}
                     label="Postal Code"
                     name="postal_code"
@@ -242,10 +244,12 @@ export function StoreCard({ onSubmitted }) {
                       })
                     }
                   />
-                </Grid.Cell> 
+                </Grid.Cell>
               </Grid>
 
-              <Button primary submit>Submit</Button>
+              <Button primary submit>
+                Submit
+              </Button>
             </FormLayout>
           </Form>
         );

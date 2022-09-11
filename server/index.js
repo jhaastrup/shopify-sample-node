@@ -22,7 +22,7 @@ const {
 } = require("./controllers/gdpr.js");
 const proxyRouter = require("./routes/app_proxy/index.js");
 const proxyVerification = require("./middleware/proxyVerification.js");
-const createNewCarrier  = require("./middleware/carrier.js");
+const createNewCarrier = require("./middleware/carrier.js");
 const verifySettings = require("./middleware/verifySettings.js");
 const fulfillmentService = require("./middleware/fulfillment.js");
 
@@ -65,15 +65,14 @@ Shopify.Webhooks.Registry.addHandlers({
 
 const createServer = async (root = process.cwd()) => {
   const app = Express();
-  app.use(Express.json());
 
   app.set("top-level-oauth-cookie", "shopify_top_level_oauth");
   app.use(cookieParser(Shopify.Context.API_SECRET_KEY));
 
   applyAuthMiddleware(app);
-  createNewCarrier(app);
-  verifySettings(app);
-  fulfillmentService(app);
+  createNewCarrier(app); //MARK:- run express.json() middleware here
+  verifySettings(app); //MARK:- run express.json() middleware here
+  fulfillmentService(app); //MARK:- run express.json() middleware here
 
   //Handle all webhooks in one route
   app.post("/webhooks/:topic", async (req, res) => {
