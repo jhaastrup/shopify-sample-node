@@ -43,7 +43,7 @@ const verifySettings = (app) => {
       console.log(session, "fffffffffh");
         
             const { data } = await axios.get(
-                `${process.env.BASE_URL}/oauth/profile` ,
+                `https://live.sendbox.co/oauth/profile` ,
                  {
                    headers: {
                      "Access-Token": `Basic ${response.values.authToken}`,
