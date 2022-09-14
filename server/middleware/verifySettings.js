@@ -10,7 +10,7 @@ const registerFulfillment =  `mutation {
   fulfillmentServiceCreate(
     name: "Fulfillment by Sendbox",
     trackingSupport: true, 
-    callbackUrl:"https://shopify.integrations.sendbox.co",
+    callbackUrl:"https://sleepy-shelf-70000.herokuapp.com",
     fulfillmentOrdersOptIn:true 
     inventoryManagement:true
     ) {
@@ -41,7 +41,7 @@ const verifySettings = (app) => {
       console.log(response);
       const session = await Shopify.Utils.loadOfflineSession(shop)
       console.log(session, "fffffffffh");
-        try {
+        
             const { data } = await axios.get(
                 `${process.env.BASE_URL}/oauth/profile` ,
                  {
@@ -61,15 +61,7 @@ const verifySettings = (app) => {
                   }
                 );
                 res.status(200).send("Successful");
-              }
-            
-        } catch (error) {
-            if (error) {
-                res
-                  .status(500)
-                  .send("Invalid Authtoken please get the correct token and try again");
-              }
-        }
+              }        
     })
 
      //handle submitting store details 
