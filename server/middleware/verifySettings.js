@@ -43,7 +43,7 @@ const verifySettings = (app) => {
       const session = await Shopify.Utils.loadOfflineSession(shop)
       console.log(session, "fffffffffh");
         
-            const { data } = await axios.get(
+            const  data  = await axios.get(
                 `https://live.sendbox.co/oauth/profile` ,
                  {
                    headers: {
