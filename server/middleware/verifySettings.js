@@ -1,5 +1,6 @@
 const axios = require('axios');
 const StoreModel = require("../../utils/models/StoreModel");
+const SessionModel = require("../../utils/models/SessionModel");
 const {CarrierService, FulfillmentService,Webhook } = require('@shopify/shopify-api/dist/rest-resources/2022-07/index.js');
 const { default: Shopify } = require("@shopify/shopify-api");
 require("dotenv").config();
