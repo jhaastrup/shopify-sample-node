@@ -366,7 +366,7 @@ const verifySettings = (app) => {
     const shop = req.headers["x-shopify-shop-domain"];
     console.log(shop); 
 
-  await StoreModel.findOneAndUpdate({ shop }, { isActive: false });
+  await StoreModel.findOneAndUpdate({ shop }, { isActive: false , carrierId:undefined});
   await SessionModel.deleteMany({ shop });
   res.status(200).end();
   })
