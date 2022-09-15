@@ -52,7 +52,7 @@ const verifySettings = (app) => {
                  }
                );
                console.log(data);
-               if (data.pk) {
+             
                 //then find the user in the db using shop and update it.
                  await StoreModel.findOneAndUpdate({shop },
                   {
@@ -60,8 +60,7 @@ const verifySettings = (app) => {
                     appId: response?.values.appId,
                   }
                 );
-                res.status(200).send("Successful");
-              }        
+                res.status(200).send("Successful");   
     })
 
      //handle submitting store details 
@@ -361,6 +360,15 @@ const verifySettings = (app) => {
     res.send({ dbObj });
     //res.send("working")
   });
+
+  app.post("/webhooks/app_uninstalled", async (req, res) =>{
+    const shop = req.headers["x-shopify-shop-domain"];
+    console.log(shop); 
+
+  await StoreModel.findOneAndUpdate({ shop }, { isActive: false });
+  await SessionModel.deleteMany({ shop });
+  res.status(200).end();
+  })
 
  /*  app.post("/check", async (req, res) => {
     const response = req.body
